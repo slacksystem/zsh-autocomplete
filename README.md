@@ -182,8 +182,8 @@ bindkey -M menuselect '\t' menu-complete "$terminfo[kcbt]" reverse-menu-complete
 ```
 
 ### First insert the common substring
-You can make any completion widget first insert the sequence of characters
-that's common to all completions, if any, before inserting actual completions:
+You can make any completion widget first insert the longest sequence of characters
+that will complete to all completions shown, if any, before inserting actual completions:
 ```zsh
 # all Tab widgets
 zstyle ':autocomplete:*complete*:*' insert-unambiguous yes
@@ -194,6 +194,15 @@ zstyle ':autocomplete:*history*:*' insert-unambiguous yes
 # ^S
 zstyle ':autocomplete:menu-search:*' insert-unambiguous yes
 ```
+
+#### Insert prefix instead of substring
+When using the above, if you want each widget to first try to insert only the longest _prefix_ that
+will complete to all completions shown, if any, then add the following:
+```zsh
+zstyle ':completion:*:*' matcher-list 'm:{[:lower:]-}={[:upper:]_}' '+r:|[.]=**'
+```
+Note, though, that this will also slightly change what completions are listed initially. This is a
+limitation of the underlying implementation in Zsh.
 
 ### Make <kbd>Enter</kbd> submit the command line straight from the menu
 By default, pressing <kbd>Enter</kbd> in the menu search exits the search and
@@ -291,13 +300,11 @@ Add any of the following to your `.zshrc` file _after_ sourcing Autocomplete:
 }
 ```
 
-#### Reset <kbd>Ctrl</kbd><kbd>R</kbd> and <kbd>Ctrl</kbd><kbd>S</kbd>
+#### Preserve Zsh-default keybindings
+To prevent Autocomplete from overriding a default keybinding, add a `.` in front of the widget's name. For example:
 ```
-   zle -A {.,}history-incremental-search-backward
-   zle -A {.,}vi-history-search-backward
-   bindkey -M emacs '^S' history-incremental-search-forward
-   bindkey -M vicmd '/' vi-history-search-forward
-}
+bindkey '^R' .history-incremental-search-backward
+bindkey '^S' .history-incremental-search-forward
 ```
 
 ## Author
