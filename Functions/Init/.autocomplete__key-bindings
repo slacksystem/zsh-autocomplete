@@ -100,8 +100,8 @@ ${0}:precmd() {
   ${0}:rebind emacs history-incremental-search-forward menu-search '^S'
   ${0}:bind-menu    history-incremental-search-forward             '^S'
 
-  ${0}:rebind vicmd {vi-history,history-incremental}-search-backward '/'
-  ${0}:rebind vicmd  vi-history-search-forward         menu-search   '?'
+  # ${0}:rebind vicmd {vi-history,history-incremental}-search-backward '/'
+  # ${0}:rebind vicmd  vi-history-search-forward         menu-search   '?'
 
   unset -m '_autocomplete__key_*'
   unfunction ${0}:{{,re,un}bind,bound}
